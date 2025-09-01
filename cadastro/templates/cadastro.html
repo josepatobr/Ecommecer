@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <title>Cadastro</title>
+  </head>
+  
+  <body>
+    <h2>Cadastro</h2>
+    <form id="form-cadastro">
+      <input type="text" name="username" placeholder="Nome" required><br>
+      <input type="email" name="email" placeholder="Email" required><br>
+      <input type="password" name="password" placeholder="Senha" required><br>
+      <input type="password" name="confirmed_password" placeholder="Confirmar Senha" required><br>
+      <button type="submit">Cadastrar</button>
+    </form>
+      <button id="google-login-btn" class="btn btn-danger">
+        Entrar com Google
+      </button>
+    
+    <script>
+      const form = document.getElementById('form-cadastro');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = {
+          username: formData.get('username'),
+          email: formData.get('email'),
+          password: formData.get('password'),
+          confirmed_password: formData.get('confirmed_password')
+        };
+
+        const response = await fetch('api/cadastro/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert(result.mensagem);
+          window.location.href = '/verificar-codigo/';
+        } else {
+          alert('Erro: ' + result.detail?.[0]?.msg || 'Falha no cadastro');
+        }
+      });
+
+
+      //POP DO GOOGLE
+      document.getElementById('google-login-btn').addEventListener('click', function () {
+        const width = 600;
+        const height = 600;
+        const left = (screen.width - width) / 2;
+        const top = (screen.height - height) / 2;
+
+        const popup = window.open(
+          '/accounts/google/login/?process=redirect',
+          'Login com Google',
+          `width=${width},height=${height},top=${top},left=${left}`
+        );
+
+        const timer = setInterval(function () {
+          if (popup.closed) {
+            clearInterval(timer);
+            window.location.reload();
+            window.location.href = '/home/';
+          }
+        }, 1000);
+        });
+        
+    </script>
+  </body>
+</html>

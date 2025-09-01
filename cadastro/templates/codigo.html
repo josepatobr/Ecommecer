@@ -1,0 +1,39 @@
+
+
+
+<form action="/verificar-codigo">
+    <input type="number" name="codigo">
+    <button type="submit">Verificar</button>
+  </form>
+
+    <script>
+      const form = document.getElementById('verificar-codigo');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = {
+          codigo: formData.get('codigo'),
+        };
+
+        const response = await fetch('api/verificar-codigo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert(result.mensagem);
+          window.location.href = '/home/';
+        } else {
+          alert('Erro: ' + result.detail?.[0]?.msg || 'Falha no sistema');
+        }
+      });
+    </script>
+
+  
