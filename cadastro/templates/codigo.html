@@ -1,7 +1,7 @@
 
 
 
-<form action="/verificar-codigo">
+  <form action="/verificar-codigo">
     <input type="number" name="codigo">
     <button type="submit">Verificar</button>
   </form>
@@ -31,7 +31,7 @@
           alert(result.mensagem);
           window.location.href = '/home/';
         } else {
-          alert('Erro: ' + result.detail?.[0]?.msg || 'Falha no sistema');
+          alert('Erro: ' + result.detail?.[0]?.msg || 'falha no sistema');
         }
       });
     </script>
