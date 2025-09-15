@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Meus Pedidos</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body {
+                background-color: #f8f9fa;
+            }
+            .pedido-card {
+                margin-bottom: 30px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.05);
+                border-radius: 10px;
+            }
+            .pedido-header {
+                background-color: #343a40;
+                color: white;
+                padding: 15px;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+            }
+            .item-list {
+                padding: 15px;
+            }
+            .item-list li {
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="container mt-5">
+            <h2 class="mb-4">📦 Meus Pedidos</h2>
+
+            {% for pedido in pedidos %}
+            <div class="card pedido-card">
+                <div class="pedido-header">
+                    <div class="d-flex justify-content-between">
+                        <div><strong>Pedido #{{ pedido.id }}</strong></div>
+                        <div>{{ pedido.data }}</div>
+                    </div>
+                    <div>Status: <span class="badge bg-success">{{ pedido.status }}</span></div>
+                </div>
+                <div class="card-body">
+                    <p><strong>Total:</strong> R$ {{ pedido.total }}</p>
+                    <p><strong>ID da Sessão Stripe:</strong> {{ pedido.stripe_session_id }}</p>
+                    <hr>
+                    <h6>Itens:</h6>
+                    <ul class="list-group item-list">
+                        {% for item in pedido.itens %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ item.produto }} ({{ item.quantidade }}x)
+                            <span>R$ {{ item.subtotal }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">Você ainda não realizou nenhum pedido.</p>
+            {% endfor %}
+        </div>
+
+    </body>
+</html>

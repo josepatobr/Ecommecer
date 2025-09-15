@@ -8,6 +8,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', api.urls),
-    path('', include("cadastro.urls")),
+    path('Ecommecer', include("cadastro.urls")),
+    path('Ecommecer', include("Ecommecer.urls")),
+
 
 ]

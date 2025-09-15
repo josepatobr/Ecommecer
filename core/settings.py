@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'ninja_jwt' , 
+    'ninja_jwt',
+    "Ecommecer"
 
 
 ]
@@ -162,3 +163,10 @@ SIMPLE_JWT = {
 
 #CELERY
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+#STRIPE
+STRIPE_SECRET_KEY=os.getenv('STRIPE_SECRET_KEY'),
+STRIPE_PUBLIC_KEY=os.getenv('STRIPE_PUBLIC_KEY'),
+STRIPE_WEBHOOK_SECRET=os.getenv('STRIPE_WEBHOOK_SECRET'),
+STRIPE_SUCCESS_URL = "https://sualoja.com/sucesso",
+STRIPE_CANCEL_URL = "https://sualoja.com/cancelado"

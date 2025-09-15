@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Detalhes do Produto</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            .produto-card {
+                max-width: 600px;
+                margin: 50px auto;
+                box-shadow: 0 0 15px rgba(0,0,0,0.1);
+                border-radius: 10px;
+            }
+            .produto-img {
+                max-height: 300px;
+                object-fit: cover;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+            }
+            .preco-original {
+                text-decoration: line-through;
+                color: #888;
+            }
+            .preco-promocional {
+                color: #d9534f;
+                font-weight: bold;
+                font-size: 1.4em;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="card produto-card">
+            {% if produto.imagem %}
+                <img src="{{ produto.imagem.url }}" class="card-img-top produto-img" alt="{{ produto.nome }}">
+            {% else %}
+                <img src="https://via.placeholder.com/600x300?text=Sem+Imagem" class="card-img-top produto-img" alt="Sem imagem">
+            {% endif %}
+
+            <div class="card-body">
+                <h3 class="card-title">{{ produto.nome }}</h3>
+                <p class="card-text">Categoria: <strong>{{ produto.categoria.nome }}</strong></p>
+                <p class="card-text">Estoque disponível: {{ produto.quantidade_estoque }}</p>
+
+                {% if produto.em_promocao %}
+                    <p class="card-text preco-original">De: R$ {{ produto.preco_venda }}</p>
+                    <p class="card-text preco-promocional">Por: R$ {{ produto.preco_promocional }}</p>
+                    <p class="card-text text-success">Desconto: {{ produto.desconto_percentual }}%</p>
+                {% else %}
+                    <p class="card-text preco-promocional">Preço: R$ {{ produto.preco_venda }}</p>
+                {% endif %}
+
+                <a href="{% url 'comprar_produto' produto.id %}" class="btn btn-primary mt-3">
+                    <i class="fas fa-shopping-cart"></i> Comprar
+                </a>
+            </div>
+        </div>
+
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    </body>
+</html>

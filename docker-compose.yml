@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  web: &web
+    build: .
+    command: uv run python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+
+  celery:
+    <<: *web
+    ports: []
+    command: celery -A core.celery.app worker --loglevel=info
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    ports:
+    - "6379:6379"

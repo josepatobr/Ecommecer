@@ -15,7 +15,7 @@ def gerar_codigo():
     return codigo, validade
 
 
-@cadastro_router.post("/cadastro/")
+@cadastro_router.post("/cadastro")
 def cadastro(request, payload: CadastroSchema):
     user = User(username=payload.username, email=payload.email)
     user.set_password(payload.password)
@@ -48,6 +48,5 @@ def verificar_codigo(request, payload: CodigoVerificacaoSchema):
         return {"erro": "Código incorreto"}
 
     User.objects.create_user(username=payload.email.split("@")[0], email=payload.email, password="senha_definida")
-
     registro.delete()
     return {"status": "Usuário cadastrado com sucesso"}

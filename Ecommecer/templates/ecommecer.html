@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Produtos Recomendados</title>
+        <style>
+            .produto {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin: 10px;
+                border-radius: 5px;
+            }
+             .filtro-categoria {
+                background-color: #f4f4f4;
+                padding: 15px;
+                text-align: center;
+            }
+            .container {
+                padding: 20px;
+            }
+        </style>
+    </head>
+ <div class="filtro-categoria">
+            <form method="get" action="{% url 'Ecommecer' %}">
+                <label for="categoria">Filtrar por categoria:</label>
+                <select name="categoria" id="categoria" onchange="this.form.submit()">
+                    <option value="">Todas</option>
+                    {% for cat in categorias %}
+                        <option value="{{ cat.id }}">{{ cat.nome }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+
+        <div class="container">
+            <h2>🔥 Promoções em destaque</h2>
+            {% for produto in promocoes %}
+                <div class="produto">
+                    <h3>{{ produto.nome }}</h3>
+                    <p><del>De: R$ {{ produto.preco_venda }}</del></p>
+                    <p><strong>Por: R$ {{ produto.preco_promocional }}</strong></p>
+                    <p>Desconto: {{ produto.desconto_percentual }}%</p>
+                    <p>Categoria: {{ produto.categoria.nome }}</p>
+                </div>
+            {% empty %}
+                <p>Nenhuma promoção disponível no momento.</p>
+            {% endfor %}
+
+            <hr>
+
+            <h2>🛍️ Produtos</h2>
+            {% for produto in produtos %}
+                <div class="produto">
+                    <h3>{{ produto.nome }}</h3>
+                    <p>Preço: R$ {{ produto.preco_venda }}</p>
+                    <p>Categoria: {{ produto.categoria.nome }}</p>
+                </div>
+            {% empty %}
+                <p>Nenhum produto encontrado para essa categoria.</p>
+            {% endfor %}
+        </div>
+
+    </body>
+</html>

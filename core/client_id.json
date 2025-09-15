@@ -1,7 +1,6 @@
 
-
 {
-  "web": {
+  "installed": {
     "client_id": "546262029540-ak5m66oi1tdd9cmfvfjk3qpj8r20t4eg.apps.googleusercontent.com",
     "project_id": "unified-ion-468814-d5",
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
