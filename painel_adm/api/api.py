@@ -1,11 +1,11 @@
 from painel_adm.utils import cargos_requeridos
 from Ecommecer.models import Pedido
 from painel_adm.api.schema import RastreioSchema
-from ninja import NinjaAPI
+from ninja import Router
 
 import json
 
-administrador_router = NinjaAPI()
+administrador_router = Router()
 
 @cargos_requeridos(["envios", "geral"])
 @administrador_router.post("/atualizar-rastreio")
