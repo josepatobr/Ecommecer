@@ -8,9 +8,9 @@ api = NinjaExtraAPI(urls_namespace="api")
 
 
 api.register_controllers(NinjaJWTDefaultController)
-api.add_router('cadastro/', cadastro_router)
-api.add_router('ecommecer/', Ecommecer_router)
-api.add_router('painel_adm/', administrador_router)
+api.add_router('/cadastro', cadastro_router)
+api.add_router('/ecommecer', Ecommecer_router)
+api.add_router('/painel_adm', administrador_router)
 
 
 

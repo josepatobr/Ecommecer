@@ -1,4 +1,4 @@
-from .models import AdministradorPainel, PerfilUsuario
+from .models import AdministradorPainel
 from functools import wraps
 from ninja.errors import HttpError
 from Ecommecer.models import Pedido
