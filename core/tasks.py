@@ -2,6 +2,8 @@ import smtplib
 import base64
 from celery import shared_task
 from core.OAuth import credentials
+from painel_adm.utils import verificar_entregas
+
 
 @shared_task
 def enviar_email_async(remetente, destinatario, assunto, corpo, access_token=credentials.token):
@@ -15,3 +17,7 @@ def enviar_email_async(remetente, destinatario, assunto, corpo, access_token=cre
     mensagem = f"Subject: {assunto}\n\n{corpo}"
     server.sendmail(remetente, destinatario, mensagem)
     server.quit()
+
+@shared_task
+def tarefa_verificar_entregas():
+    verificar_entregas()

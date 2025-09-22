@@ -36,8 +36,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'ninja_jwt',
-    "Ecommecer"
-
+    "Ecommecer",
+    "painel_adm",
+    'django_celery_beat',
 
 ]
 

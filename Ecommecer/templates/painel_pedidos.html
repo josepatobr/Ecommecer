@@ -55,6 +55,17 @@
                         </li>
                         {% endfor %}
                     </ul>
+
+                    <p><strong>Número de Rastreio:</strong> 
+                        {% if pedido.numero_rastreio %}
+                            <a href="https://www.linkcorreios.com.br/?id={{ pedido.numero_rastreio }}" target="_blank">
+                            {{ pedido.numero_rastreio }} 🔍
+                            </a>
+                        {% else %}
+                            <span class="text-muted">Ainda não disponível</span>
+                        {% endif %}
+                    </p>
+
                 </div>
             </div>
             {% empty %}

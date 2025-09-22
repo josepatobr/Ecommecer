@@ -55,7 +55,42 @@
                 </a>
             </div>
         </div>
+        <div class="produto">
+            <h3>{{ produto.nome }}</h3>
+            <p>Preço: R$ {{ produto.preco }}</p>
+            <input type="number" class="quantidade-input" value="1" min="1" data-produto-id="{{ produto.id }}">
+            <button class="btn-adicionar">Adicionar ao carrinho</button>
+        </div>
 
         <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     </body>
 </html>
+
+<script>
+    document.querySelectorAll(".btn-adicionar").forEach(button => {
+    button.addEventListener("click", async function () {
+        const input = this.previousElementSibling;
+        const produtoId = input.getAttribute("data-produto-id");
+        const quantidade = input.value;
+
+        const response = await fetch("/carrinho/adicionar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+        produto_id: produtoId,
+        quantidade: quantidade
+        })
+    });
+
+    const data = await response.json();
+
+    if (data.mensagem) {
+      alert(data.mensagem);
+    } else {
+      alert(data.erro || "Erro ao adicionar ao carrinho.");
+    }
+    });
+    });
+</script>

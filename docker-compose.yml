@@ -18,6 +18,14 @@ services:
     depends_on:
       - redis
 
+  beat:
+    <<: *web
+    ports: []
+    command: celery -A core.celery.app beat --loglevel=info
+    depends_on:
+      - redis
+
+
   redis:
     image: redis:latest
     ports:

@@ -52,7 +52,7 @@
         <nav class="navbar">
             <div>
                 <a href="{% url 'Ecommecer' %}" title="Home"><i class="fas fa-home"></i></a>
-                <a href="{% url 'carrinho' %}" title="Carrinho"><i class="fas fa-shopping-cart"></i></a>
+                <a href="/carrinho">🛒 Carrinho ({{ total_itens }} itens)</a>
                 <a href="{% url 'configuracao' %}" title="Configuração"><i class="fas fa-cog"></i></a>
             </div>
             <div>

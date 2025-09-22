@@ -5,11 +5,11 @@ from .api import api
 
 
 urlpatterns = [
+    path('', api.urls),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', api.urls),
     path('Ecommecer', include("cadastro.urls")),
     path('Ecommecer', include("Ecommecer.urls")),
-
+    path('painel_administrador', include("painel_adm.urls")),
 
 ]

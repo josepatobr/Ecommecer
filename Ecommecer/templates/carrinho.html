@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Meu Carrinho</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .mensagens li { padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+    .success { background-color: #d4edda; color: #155724; }
+    .error { background-color: #f8d7da; color: #721c24; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    .total { font-weight: bold; font-size: 1.2em; text-align: right; margin-top: 10px; }
+    .topo { display: flex; justify-content: space-between; align-items: center; }
+    .btn { padding: 8px 12px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    .btn:hover { background-color: #218838; }
+  </style>
+</head>
+    <body>
+
+        <div class="topo">
+            <h1>Meu Carrinho</h1>
+            <div>Carrinho ({{ total_itens }} itens)</div>
+        </div>
+
+        {% if messages %}
+            <ul class="mensagens">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+        <table>
+            <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Preço Unitário</th>
+                <th>Subtotal</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in itens %}
+            <tr>
+                <td>{{ item.produto.nome }}</td>
+                <td>{{ item.quantidade }}</td>
+                <td>R$ {{ item.produto.preco }}</td>
+                <td>R$ {{ item.subtotal }}</td>
+                <td>
+                    
+                    <button class="btn remover-btn" data-produto-id="{{ item.produto.id }}">Remover</button>
+                
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="total">Total: R$ {{ total }}</div>
+
+        <button id="finalizar-btn" class="btn">Finalizar Compra</button>
+<script>
+    document.getElementById("finalizar-btn").addEventListener("click", async function () {
+    const response = await fetch("/finalizar-carrinho", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    body: JSON.stringify({})
+    });
+
+    const data = await response.json();
+
+    if (data.pedido_id) {
+        alert(data.mensagem);
+        window.location.href = "/painel_pedidos";  
+    } else {
+        alert(data.erro || "Erro ao finalizar o pedido.");
+    }
+    });
+
+    document.querySelectorAll(".remover-btn").forEach(button => {
+    button.addEventListener("click", async function () {
+        const produtoId = this.getAttribute("data-produto-id");
+
+        const response = await fetch("/carrinho/remover", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ produto_id: produtoId })
+        });
+
+        const data = await response.json();
+
+        if (data.mensagem) {
+            alert(data.mensagem);
+            window.location.reload(); 
+        } else {
+            alert(data.erro || "Erro ao remover o item.");
+        }   
+        });
+    });
+</script>

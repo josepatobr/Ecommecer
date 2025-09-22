@@ -77,14 +77,35 @@ class Produto(models.Model):
         return self.quantidade_estoque > 0
 
 class Pedido(models.Model):
+    STATUS_CHOICES = [
+        ("pendente", "Pendente"),
+        ("pago", "Pago"),
+        ("enviando", "Enviando"),
+        ("entregue", "Entregue"),
+    ]
+
+
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    total = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=50, default="Pendente")
     data_criacao = models.DateTimeField(auto_now_add=True)
-    stripe_session_id = models.CharField(max_length=255, blank=True, null=True)  # novo campo
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pendente")
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+    stripe_session_id = models.CharField(max_length=255, blank=True, null=True)
+    numero_rastreio = models.CharField(max_length=100, blank=True, null=True)
 
 class ItemPedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name="itens")
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     quantidade = models.PositiveIntegerField()
     preco_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+
+class CarrinhoItem(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    quantidade = models.PositiveIntegerField(default=0)
+    adicionado_em = models.DateTimeField(auto_now_add=True)
+
+    def subtotal(self):
+        return self.quantidade * self.produto.preco
+
+    def __str__(self):
+        return f"{self.quantidade} x {self.produto.nome} ({self.usuario.username})"

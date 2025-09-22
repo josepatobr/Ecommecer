@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+    <meta charset="UTF-8">
+    <title>Painel de Rastreamento</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .card { border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        input, button { padding: 8px; margin-top: 5px; width: 100%; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+    </head>
+    
+    <body>
+        <h2>Painel de Atualização de Rastreio</h2>
+
+        <div class="card">
+            <label for="pedido_id">ID do Pedido:</label>
+            <input type="number" id="pedido_id" placeholder="Ex: 123">
+
+            <label for="numero_rastreio">Número de Rastreio:</label>
+            <input type="text" id="numero_rastreio" placeholder="Ex: AA123456789BR">
+
+            <button onclick="atualizarRastreio()">Atualizar Rastreio</button>
+
+            <p id="resposta"></p>
+        </div>
+
+        <script>
+            function atualizarRastreio() {
+            const pedidoId = document.getElementById("pedido_id").value;
+            const rastreio = document.getElementById("numero_rastreio").value;
+            const resposta = document.getElementById("resposta");
+
+            fetch("/api/painel/atualizar-rastreio", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                pedido_id: parseInt(pedidoId),
+                numero_rastreio: rastreio
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.mensagem) {
+                    resposta.textContent = data.mensagem;
+                    resposta.className = "success";
+                } else {
+                    resposta.textContent = data.erro || "Erro desconhecido";
+                    resposta.className = "error";
+                }
+            })
+            .catch(() => {
+                resposta.textContent = "Erro na conexão com o servidor";
+                resposta.className = "error";
+            });
+            }
+        </script>
+    </body>
+</html>
